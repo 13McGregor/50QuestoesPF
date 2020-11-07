@@ -78,3 +78,5 @@ myGroup l = (take(contaIguais l) l) : myGroup(drop(contaIguais l) l)
 myConcat :: [[a]] -> [a]
 myConcat [] = []
 myConcat (h:t) = h ++ (myConcat t)
+
+--test vscode
