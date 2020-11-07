@@ -132,3 +132,45 @@ aux20 :: Eq a => a -> [a] -> [a]
 aux20 a [] = []
 aux20 a (h:t) | a == h = aux20 a t
               | otherwise = h : aux20 a t
+
+--21
+myDelete :: Eq a => a -> [a] -> [a]
+myDelete _ [] = []
+myDelete a (h:t) | a == h = t
+                 | otherwise = h : myDelete a t
+
+--22
+(\\\) :: Eq a => [a] -> [a] -> [a]
+(\\\) [] _ = []
+(\\\) l [] = l
+(\\\) (h1:t1) (h2:t2) | h2 == h1 = (\\\) t1 t2
+                      | otherwise = h1 : (\\\) t1 (h2:t2)
+
+--23
+myUnion :: Eq a => [a] -> [a] -> [a]
+myUnion l [] = l
+myUnion l (h:t) | myElem h l = myUnion l t
+                | otherwise = myUnion (l++[h]) t
+
+--24
+myIntersect :: Eq a => [a] -> [a] -> [a]
+myIntersect [] _ = []
+myIntersect (h:t) l | myElem h l = h : myIntersect t l
+                    | otherwise = myIntersect t l
+
+--25
+myInsert :: Ord a => a -> [a] -> [a]
+myInsert a [] = [a]
+myInsert a (h:t) | a <= h = a : (h:t)
+                 | otherwise = h : myInsert a t
+
+--26
+myUnwords :: [String] -> String
+myUnwords [] = ""
+myUnwords [s] = s
+myUnwords (h:t) = h ++ " " ++ myUnwords t
+
+--27
+myUnlines :: [String] -> String
+myUnlines [] = ""
+myUnlines (h:t) = h ++ "/n" ++ myUnlines t
