@@ -5,12 +5,10 @@ myEnumFromTo a b | a > b = []
                  | otherwise = a:myEnumFromTo (a+1) b
 
 --2
-
 myEnumFromThenTo :: Int -> Int -> Int -> [Int]
 myEnumFromThenTo a b c | a > c && a < b = []
                        | a < c && a > b = [] 
                        | otherwise =  a : myEnumFromThenTo b (b+(b-a)) c
-
 
 --3
 myPlusPlus :: [a] -> [a] -> [a]
@@ -176,3 +174,96 @@ myUnlines [] = ""
 myUnlines (h:t) = h ++ "/n" ++ myUnlines t
 
 --28
+myPMaior ::  Ord a => [a] -> Int
+myPMaior (h:t) = pos (maior h t) (h:t)
+
+maior :: Ord a => a -> [a] -> a
+maior a [] = a
+maior a (h:t) | a > h = maior a t
+              | otherwise = maior h t
+
+pos :: Ord a => a -> [a] -> Int
+pos _ [] = 0
+pos a (h:t) | a == h = 0
+            | otherwise = 1 + pos a t
+
+--29
+temRepetidos :: Eq a => [a] -> Bool
+temRepetidos (h:t) = aux29 h t
+
+
+aux29 :: Eq a => a -> [a] -> Bool
+aux29 _ [] = False
+aux29 a (h:t) | a == h = True
+              | otherwise = aux29 a t
+
+--30
+algarismos :: [Char] -> [Char]
+algarismos [] = []
+algarismos (h:t) | (h >= '0' && h <= '9') = h : algarismos t
+                 | otherwise = algarismos t
+
+--31
+posImpares ::  [a] -> [a]
+posImpares [] = []
+posImpares (h:i:t) = i : posImpares t
+
+--32
+posPares ::  [a] -> [a]
+posPares [] = []
+posPares (h:i:t) = h : posPares t
+
+--33
+isSorted :: Ord a => [a] -> Bool
+isSorted [] = True
+isSorted [_] = True
+isSorted (h:i:t) | h <= i = isSorted (i:t)
+                 | otherwise = False
+
+--34
+iSort :: Ord a => [a] -> [a]
+iSort [] = []
+iSort (h:t) = myInsert h (iSort t)
+
+--35
+menor :: String -> String -> Bool
+menor [] [] = False
+menor [] _ = True
+menor _ [] = False
+menor (h1:t1) (h2:t2) | h1 == h2 = menor t1 t2
+                      | h1 > h2 = False
+                      | h1 < h2 = True
+
+--36
+elemMSet ::  Eq a => a -> [(a,Int)] -> Bool
+elemMSet a [] = False
+elemMSet a ((x,y):t) | a == x = True
+                     | otherwise = elemMSet a t
+
+--37
+lengthMSet :: [(a,Int)] -> Int
+lengthMSet [] = 0
+lengthMSet ((x,y):t) = y + lengthMSet t
+
+--38
+converteMSet ::  [(a,Int)] -> [a]
+converteMSet [] = []
+converteMSet ((x,y):t) = myReplicate y x ++ converteMSet t
+
+--39
+insereMSet ::  Eq a => a -> [(a,Int)] -> [(a,Int)]
+insereMSet a [] = [(a,1)]
+insereMSet a ((x,y):t) | a == x = ((x,y+1):t)
+                       | otherwise = (x,y) : insereMSet a t
+
+--40
+removeMSet ::  Eq a => a -> [(a,Int)] -> [(a,Int)]
+removeMSet _ [] = []
+removeMSet a ((x,y):t) | a == x && y == 1 = removeMSet a t
+                       | a == x = ((x,y-1):t)
+                       | otherwise = (x,y) : removeMSet a t
+
+--41
+constroiMSet ::  Ord a => [a] -> [(a,Int)]
+constroiMSet [] = []
+constroiMSet (h:t) = (( h , contaIguais (h:t))) : constroiMSet (drop(contaIguais (h:t)) (h:t))
