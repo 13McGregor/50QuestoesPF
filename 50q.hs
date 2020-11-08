@@ -174,3 +174,5 @@ myUnwords (h:t) = h ++ " " ++ myUnwords t
 myUnlines :: [String] -> String
 myUnlines [] = ""
 myUnlines (h:t) = h ++ "/n" ++ myUnlines t
+
+--28
