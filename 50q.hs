@@ -267,3 +267,88 @@ removeMSet a ((x,y):t) | a == x && y == 1 = removeMSet a t
 constroiMSet ::  Ord a => [a] -> [(a,Int)]
 constroiMSet [] = []
 constroiMSet (h:t) = (( h , contaIguais (h:t))) : constroiMSet (drop(contaIguais (h:t)) (h:t))
+
+--42
+partitionEithers ::  [Either a b] -> ([a],[b])
+partitionEithers [] = ([],[])
+partitionEithers l = (lefts l, rights l)
+
+lefts :: [Either a b] -> [a]
+lefts [] = []
+lefts (Left a : t) = a : lefts t
+lefts (Right b : t) = lefts t
+
+rights :: [Either a b] -> [b]
+rights [] = []
+rights (Left a : t) = rights t
+rights (Right b : t) = b : rights t
+
+--43
+catMaybes :: [Maybe a] -> [a]
+catMaybes [] = []
+catMaybes (Just h : t) = h : catMaybes t
+catMaybes (Nothing : t) = catMaybes t
+
+--44
+data Movimento = Norte | Sul | Este | Oeste deriving Show
+
+posicao ::  (Int,Int) -> [Movimento] -> (Int,Int)
+posicao (x,y) [] = (x,y)
+posicao (x,y) (Norte:t) = posicao (x, y-1) t
+posicao (x,y) (Sul:t) = posicao (x, y+1) t
+posicao (x,y) (Este:t) = posicao (x+1, y) t
+posicao (x,y) (Oeste:t) = posicao (x-1, y) t
+
+--45
+caminho :: (Int,Int) -> (Int,Int) -> [Movimento]
+caminho (a,b) (c,d) | a==c && b==d = []
+                    | a < c = Este : caminho (a+1,b) (c,d)
+                    | a > c = Oeste : caminho (a-1,b) (c,d)
+                    | b < d = Sul : caminho (a,b+1) (c,d)
+                    | b > d = Norte : caminho (a,b-1) (c,d)
+
+--46
+vertical ::  [Movimento] -> Bool
+vertical [] = True
+vertical (Norte:t) = vertical t
+vertical (Sul:t) = vertical t
+vertical (Este:t) = False
+vertical (Oeste:t) = False
+
+--47
+data Posicao = Pos Int Int
+                deriving Show
+
+maisCentral :: [Posicao] -> Posicao
+maisCentral [Pos a b] = Pos a b 
+maisCentral (Pos a b : Pos c d : t) | ( a^2 + b^2 ) < ( c^2 + d^2 ) = maisCentral (Pos a b : t)
+                                            | otherwise = maisCentral (Pos a b : t)
+
+--48
+vizinhos :: Posicao -> [Posicao] -> [Posicao]
+vizinhos _ [] = []
+vizinhos (Pos x y) (Pos w z : t) | (w == x + 1) && (z >= y - 1) && (z <= y + 1) = (Pos w z) : vizinhos (Pos x y) t
+                                 | (w == x - 1) && (z >= y - 1) && (z <= y + 1) = (Pos w z) : vizinhos (Pos x y) t
+                                 | (w == x) && ((z == y - 1) || (z == y + 1))   = (Pos w z) : vizinhos (Pos x y) t
+                                 | otherwise = vizinhos (Pos x y) t
+
+--49 
+mesmaOrdenada ::  [Posicao] -> Bool
+mesmaOrdenada [Pos a b] = True
+mesmaOrdenada (Pos a b : Pos c d : t) | b == d = mesmaOrdenada (Pos c d : t)
+                                      | otherwise = False
+
+--50
+data Semaforo = Verde | Amarelo | Vermelho
+              deriving Show
+
+interseccaoOK ::  [Semaforo] -> Bool
+interseccaoOK [] = True
+interseccaoOK l | nVermelhos l < 2 = True
+                | otherwise = False
+
+nVermelhos :: [Semaforo] -> Int
+nVermelhos [] = 0
+nVermelhos (Verde:t) = 1 + nVermelhos t
+nVermelhos (Amarelo:t) = 1 + nVermelhos t
+nVermelhos (Vermelho:t) = nVermelhos t
