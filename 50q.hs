@@ -29,7 +29,7 @@ myreverse (h:t) = myreverse t ++ [h]
 --6
 myTake :: Int -> [a] -> [a]
 myTake _ [] = []
-myTake 0 _ = []
+myTake 0 (h:t) = t
 myTake a (h:t) = h : myTake (a-1) t
 
 --7
