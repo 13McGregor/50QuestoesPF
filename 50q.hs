@@ -8,7 +8,8 @@ myEnumFromTo a b | a > b = []
 myEnumFromThenTo :: Int -> Int -> Int -> [Int]
 myEnumFromThenTo a b c | a > c && a < b = []
                        | a < c && a > b = [] 
-                       | otherwise =  a : myEnumFromThenTo b (b+(b-a)) c
+                       | a < c =  a : myEnumFromThenTo b (b+(b-a)) c
+                       | a > c =  a : myEnumFromThenTo b (b-(a-b)) c
 
 --3
 myPlusPlus :: [a] -> [a] -> [a]
